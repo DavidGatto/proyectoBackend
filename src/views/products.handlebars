@@ -1,0 +1,35 @@
+<div class="d-flex flex-column justify-content-center align-items-center">
+
+  <h1>Welcome!, {{user.first_name}} {{user.last_name}}!</h1>
+
+  <div class="d-flex gap-4">
+
+    <p>Email: {{user.email}}</p>
+    <p>Age: {{user.age}}</p>
+    <p>Rol: {{user.role}}</p>
+  </div>
+  <a class="mb-3" href="/api/sessions/logout">Logout</a>
+  <h1 class="text-center">Product List</h1>
+  {{#each products}}
+    <div class="card" style="width: 18rem;">
+      <img src="#" class="card-img-top" alt="" />
+      <div class="card-body">
+        <h5 class="card-title text-center">{{this.title}}</h5>
+        <p class="card-text text-center">{{this.description}}</p>
+    <form action="/api/carts/{{../cartId}}/products/{{this._id}}" method="POST">
+  <button class="btnMios" type="submit">Agregar al Carrito</button>
+</form>
+      </div>
+    </div>
+  {{/each}}
+  <div class="flex">
+
+    {{#if hasPrevPage}}
+      <a href="/api/products?page={{prevPage}}">Anterior</a>
+    {{/if}}
+    {{#if hasNextPage}}
+      <a href="/api/products?page={{nextPage}}">Siguiente</a>
+    {{/if}}
+    <p>Pagina {{currentPage}} de {{totalPages}}</p>
+  </div>
+</div>
