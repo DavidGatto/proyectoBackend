@@ -3,6 +3,7 @@
 <h2>Productos en el carrito</h2>
 
 {{#each products}}
-  <p>Cantidad: {{this.quantity}}</p>
-  <p>ID: {{this._id}}</p>
+  <p>Titulo: {{getProperty this "title"}}</p>
+  <p>Cantidad: {{getProperty this "quantity"}}</p>
+  <p>ID: {{getProperty this "_id"}}</p>
 {{/each}}

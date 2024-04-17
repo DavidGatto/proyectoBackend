@@ -52,6 +52,12 @@ exphbs.create({
   allowProtoPropertiesByDefault: true,
 });
 
+const handlebars = require("handlebars");
+
+handlebars.registerHelper("getProperty", function (object, property) {
+  return object[property];
+});
+
 const httpServer = app.listen(PUERTO, () => {
   console.log(`Servidor escuchando en el puerto ${PUERTO}`);
 });

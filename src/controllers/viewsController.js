@@ -19,8 +19,8 @@ class ViewsController {
       console.log(productsList);
 
       const productsFinal = productsList.docs.map((product) => {
-        const { _id, ...prod } = product.toObject();
-        return prod;
+        const { _id: _id, ...prod } = product.toObject();
+        return { ...prod, _id: _id };
       });
 
       if (!req.session.login) {
@@ -36,6 +36,7 @@ class ViewsController {
         currentPage: productsList.page,
         totalPages: productsList.totalPages,
         user: req.session.user,
+        cartId: req.session.user.cart,
       });
     } catch (error) {
       console.error("Error al obtener productos", error);

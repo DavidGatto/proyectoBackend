@@ -4,6 +4,8 @@ const managerc = new CartManager();
 const UserModel = require("../models/user.model.js");
 const ProductRepository = require("../repositories/product.repository.js");
 const productRepository = new ProductRepository();
+const CartRepository = require("../repositories/cart.repository.js");
+const cartRepository = new CartRepository();
 
 class CartController {
   // Ruta para crear un nuevo carrito
@@ -24,10 +26,10 @@ class CartController {
     const quantity = req.body.quantity || 1;
 
     try {
-      await cartRepository.agregarProducto(cartId, productId, quantity);
-      const cartID = req.user.cart.toString();
+      await cartRepository.addProductToCart(cartId, productId, quantity);
+      // const cartID = req.user.cart.toString();
 
-      res.redirect(`/carts/${cartID}`);
+      res.redirect(`/api/carts/${cartId}`);
     } catch (error) {
       res.status(500).send("Error");
     }
@@ -73,12 +75,16 @@ class CartController {
       const cartId = req.params.cid;
       const cart = await Cart.findById(cartId);
       if (!cart) {
-        console.log("El carrito no exite");
+        console.log("El carrito no existe");
         return res.status(404).json({ error: "Carrito no encontrado" });
       }
-      return res.json(cart.products);
+
+      console.log("Datos del carrito:", cart);
+
+      // Renderiza la plantilla 'carts' y pasa los datos del carrito como contexto
+      res.render("carts", { cartId: cartId, products: cart.products });
     } catch (error) {
-      res.status(500).json({ error: "Error  del servidor" });
+      res.status(500).json({ error: "Error del servidor" });
     }
   }
 

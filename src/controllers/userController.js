@@ -1,41 +1,37 @@
-const CartModel = require("../models/cart.model.js");
+const CartModel = require("../models/cart.model");
+
 class UserController {
   async register(req, res) {
-    const { first_name, last_name, email, password, age } = req.body;
-    try {
-      const existeUsuario = await UserModel.findOne({ email });
-      if (existeUsuario) {
-        return res.status(400).send("El usuario ya existe");
-      }
+    if (!req.user)
+      return res
+        .status(400)
+        .send({ status: "error", message: "Datos incorrectos" });
 
-      //Creo un nuevo carrito:
+    try {
+      // Crear un nuevo carrito
       const nuevoCarrito = new CartModel();
       await nuevoCarrito.save();
 
-      const nuevoUsuario = new UserModel({
-        first_name,
-        last_name,
-        email,
-        cart: nuevoCarrito._id,
-        password: createHash(password),
-        age,
-      });
+      // Asociar el carrito al usuario
+      req.user.cart = nuevoCarrito;
 
-      await nuevoUsuario.save();
+      // Guardar el usuario actualizado en la sesión
+      req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email,
+        cart: req.user.cart,
+      };
 
-      const token = jwt.sign({ user: nuevoUsuario }, "coderhouse", {
-        expiresIn: "1h",
-      });
-
-      res.cookie("coderCookieToken", token, {
-        maxAge: 3600000,
-        httpOnly: true,
-      });
+      req.session.login = true;
 
       res.redirect("/api/products");
     } catch (error) {
-      console.error(error);
-      res.status(500).send("Error interno del servidor");
+      console.error("Error al crear el carrito:", error);
+      res
+        .status(500)
+        .send({ status: "error", message: "Error en el servidor" });
     }
   }
 
