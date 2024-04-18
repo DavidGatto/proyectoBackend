@@ -29,7 +29,7 @@ class CartManager {
     try {
       const cart = await this.getCartById(cartId);
       const existeProducto = cart.products.find(
-        (item) => item.product.toString() === productId
+        (item) => item.product._id.toString() === productId
       );
 
       if (existeProducto) {

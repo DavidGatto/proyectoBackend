@@ -70,6 +70,8 @@ class ViewsController {
       const productsWithStringsIds = products.map((product) => ({
         quantity: product.quantity,
         _id: product._id.toString(),
+        title: product.product.title,
+        price: product.product.price,
       }));
 
       res.render("carts", { cartId: cartId, products: productsWithStringsIds });

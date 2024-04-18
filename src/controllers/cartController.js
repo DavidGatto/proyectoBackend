@@ -79,10 +79,13 @@ class CartController {
         return res.status(404).json({ error: "Carrito no encontrado" });
       }
 
-      console.log("Datos del carrito:", cart);
-
-      // Renderiza la plantilla 'carts' y pasa los datos del carrito como contexto
-      res.render("carts", { cartId: cartId, products: cart.products });
+      const productsWhitStringsIds = cart.products.map((product) => ({
+        quantity: product.quantity,
+        _id: product._id.toString(),
+        title: product.product.title,
+        price: product.product.price,
+      }));
+      res.render("carts", { cartId: cartId, products: productsWhitStringsIds });
     } catch (error) {
       res.status(500).json({ error: "Error del servidor" });
     }
