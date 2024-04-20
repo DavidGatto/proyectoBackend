@@ -1,10 +1,31 @@
-<h1>ID del carrito: {{cartId}}</h1>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart</title>
+  </head>
+  <body>
+    <h1>Cart ID: {{cartId}}</h1>
 
-<h2>Productos en el carrito</h2>
+    <h2>Products in the Cart</h2>
 
-{{#each products}}
-  <p>Titulo: {{getProperty this "title"}}</p>
-  <p>Cantidad: {{getProperty this "quantity"}}</p>
-  <p>ID: {{getProperty this "_id"}}</p>
-  <p>Price: {{getProperty this "price"}}</p>
-{{/each}}
+    {{#each products}}
+      <div>
+        <p>Title: {{title}}</p>
+        <p>Quantity: {{quantity}}</p>
+        <p>ID: {{_id}}</p>
+        <p>Price: {{price}}</p>
+
+        <button
+          onclick="deleteProductInCart('{{cartId}}', '{{_id}}')"
+        >Remove</button>
+      </div>
+    {{/each}}
+
+    <button onclick="clearCart('{{cartId}}')">Clear Cart</button>
+
+    <button onclick="completePurchase('{{cartId}}')">Check Out</button>
+
+    <script src="/js/cart.js"></script>
+  </body>
+</html>

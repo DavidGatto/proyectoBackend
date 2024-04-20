@@ -27,4 +27,7 @@ router.put("/carts/:cid/products/:pid", cartController.updateProdQuantity);
 
 router.delete("/carts/:cid", cartController.emptyCart);
 
+// Ruta donde se ejecuta el proceso de finalización de compra
+router.post("/carts/:cid/purchase", cartController.completePurchase);
+
 module.exports = router;

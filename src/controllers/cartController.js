@@ -1,11 +1,13 @@
 const Cart = require("../models/cart.model.js");
 const CartManager = require("../repositories/cart.repository.js");
 const managerc = new CartManager();
-const UserModel = require("../models/user.model.js");
-const ProductRepository = require("../repositories/product.repository.js");
-const productRepository = new ProductRepository();
+const TicketModel = require("../models/ticket.model.js");
 const CartRepository = require("../repositories/cart.repository.js");
 const cartRepository = new CartRepository();
+const ProductRepository = require("../repositories/product.repository.js");
+const productRepository = new ProductRepository();
+const CartUtils = require("../utils/cartUtil.js");
+const cartUtils = new CartUtils();
 
 class CartController {
   // Ruta para crear un nuevo carrito
@@ -37,15 +39,16 @@ class CartController {
 
   // Ruta para eliminar un producto de un carrito específico
   async deleteProdFromCart(req, res) {
-    const { cid, pid } = req.params;
+    const cartId = req.params.cid;
+    const productId = req.params.pid;
 
     try {
-      const updatedCart = await Cart.findByIdAndUpdate(
-        cid,
-        { $pull: { products: { _id: pid } } },
-        { new: true }
-      );
-      res.json(updatedCart.products);
+      const updatedCart = await cartRepository.deleteProduct(cartId, productId);
+      res.json({
+        status: "success",
+        message: "Producto eliminado del carrito correctamente",
+        updatedCart,
+      });
     } catch (error) {
       console.error("Error al eliminar producto del carrito", error);
       res.status(500).json({ error: "Error interno del servidor" });
@@ -125,6 +128,48 @@ class CartController {
       res.json(updatedCart.products);
     } catch (error) {
       console.error("Error al eliminar todos los productos del carrito", error);
+      res.status(500).json({ error: "Error interno del servidor" });
+    }
+  }
+
+  async completePurchase(req, res) {
+    const cartId = req.params.cid;
+    try {
+      const cart = await cartRepository.getCartById(cartId);
+      const products = cart.products;
+
+      const unavailableProducts = [];
+
+      for (const item of products) {
+        const productId = item.product;
+        const product = await productRepository.getProductById(productId);
+        if (product.stock >= item.quantity) {
+          product.stock -= item.quantity;
+          await product.save();
+        } else {
+          unavailableProducts.push(productId);
+        }
+      }
+
+      const userWithCart = await UserModel.findOne({ cart: cartId });
+
+      const ticket = new TicketModel({
+        code: cartUtils.generateUniqueCode(),
+        purchase_datetime: new Date(),
+        amount: cartUtils.calculateTotal(cart.products),
+        purchaser: userWithCart._id,
+      });
+      await ticket.save();
+
+      cart.products = cart.products.filter((item) =>
+        unavailableProducts.some((productId) => productId.equals(item.product))
+      );
+
+      await cart.save();
+
+      res.status(200).json({ ticket });
+    } catch (error) {
+      console.error("Error al procesar la compra:", error);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   }
