@@ -113,7 +113,7 @@ class ViewsController {
     const products = [];
     for (let i = 0; i < 100; i++) {
       products.push({
-        _id: faker.datatype.uuid(),
+        _id: faker.database.mongodbObjectId(),
         name: faker.commerce.productName(),
         price: faker.commerce.price(),
       });
