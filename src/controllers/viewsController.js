@@ -2,6 +2,7 @@ const ProductManager = require("../repositories/product.repository.js");
 const CartManager = require("../repositories/cart.repository.js");
 const manager = new ProductManager();
 const managerc = new CartManager();
+const { faker } = require("@faker-js/faker");
 
 class ViewsController {
   async getProducts(req, res) {
@@ -107,5 +108,18 @@ class ViewsController {
       res.status(500).json({ error: "Error interno del servidor" });
     }
   }
+
+  mockingProducts(req, res) {
+    const products = [];
+    for (let i = 0; i < 100; i++) {
+      products.push({
+        _id: faker.datatype.uuid(),
+        name: faker.commerce.productName(),
+        price: faker.commerce.price(),
+      });
+    }
+    res.json(products);
+  }
 }
+
 module.exports = ViewsController;

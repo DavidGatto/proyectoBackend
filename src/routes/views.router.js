@@ -16,4 +16,5 @@ router.get("/api/carts/:cid", viewsController.getCartById);
 
 router.get("/realtimeproducts", viewsController.renderRealTimeProducts);
 router.get("/chat", viewsController.renderChat);
+router.get("/mockingproducts", viewsController.mockingProducts);
 module.exports = router;
