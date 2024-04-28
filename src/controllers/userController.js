@@ -13,16 +13,21 @@ class UserController {
       await nuevoCarrito.save();
 
       // Asociar el carrito al usuario
-      req.user.cart = nuevoCarrito;
+      req.user.cart = nuevoCarrito._id;
 
       // Guardar el usuario actualizado en la sesión
       req.session.user = {
+        _id: req.user._id,
         first_name: req.user.first_name,
         last_name: req.user.last_name,
         age: req.user.age,
         email: req.user.email,
-        cart: req.user.cart,
+        role: req.user.role,
+        cart: nuevoCarrito._id,
       };
+
+      // Guardar los cambios en el usuario
+      await req.user.save();
 
       req.session.login = true;
 

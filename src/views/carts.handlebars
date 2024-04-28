@@ -17,8 +17,9 @@
         <p>Price: {{price}}</p>
 
         <button
-          onclick="deleteProductInCart('{{cartId}}', '{{_id}}')"
+          onclick="deleteProduct('{{cartId}}', '{{this._id}}')"
         >Remove</button>
+
       </div>
     {{/each}}
 

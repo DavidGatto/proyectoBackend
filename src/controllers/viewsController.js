@@ -28,6 +28,8 @@ class ViewsController {
         return res.redirect("/");
       }
 
+      const cartId = req.user.cart.toString();
+
       res.render("products", {
         products: productsFinal,
         hasPrevPage: productsList.hasPrevPage,
@@ -37,7 +39,7 @@ class ViewsController {
         currentPage: productsList.page,
         totalPages: productsList.totalPages,
         user: req.session.user,
-        cartId: req.session.user.cart,
+        cartId,
       });
     } catch (error) {
       console.error("Error al obtener productos", error);

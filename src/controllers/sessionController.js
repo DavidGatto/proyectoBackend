@@ -9,17 +9,24 @@ class SessionController {
   }
 
   async login(req, res) {
-    // Después de autenticar al usuario, crea un nuevo carrito para él
-    const newCart = new CartModel();
-    await newCart.save();
+    if (!req.user)
+      return res
+        .status(400)
+        .send({ status: "error", message: "Datos incorrectos" });
 
-    // Luego, guarda el usuario en la sesión junto con su carrito
+    let role = "usuario";
+
+    if (req.user.email === "adminCoder@coder.com") {
+      role = "admin";
+    }
+
     req.session.user = {
       first_name: req.user.first_name,
       last_name: req.user.last_name,
       age: req.user.age,
       email: req.user.email,
-      cart: newCart._id, // Guarda el ID del carrito en la sesión del usuario
+      role: role,
+      cart: null,
     };
 
     req.session.login = true;
