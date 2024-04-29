@@ -1,4 +1,5 @@
 const ProductModel = require("../models/product.model.js");
+const logger = require("../utils/logger.js");
 
 class ProductManager {
   async addProduct({
@@ -34,7 +35,7 @@ class ProductManager {
       });
 
       await newProduct.save();
-      console.log("Producto agregado");
+      logger.info(`Product created: ${JSON.stringify(newProduct)}`);
 
       return newProduct;
     } catch (error) {
@@ -70,18 +71,19 @@ class ProductManager {
     }
   }
 
-  async getProductById(req, res) {
-    const pid = req.params.pid;
-
+  async getProductById(id) {
     try {
-      const prod = await ProductModel.findById(pid); // Cambio aquí
-      if (prod) {
-        res.json(prod);
-      } else {
-        res.json({ Error: "No se encontró el producto" }); // Error aquí
+      const foundProduct = await ProductModel.findById(id);
+
+      if (!foundProduct) {
+        console.log(`A product with the id ${id} was not found.`);
+        return null;
       }
+
+      console.log("Product found:", foundProduct);
+      return foundProduct;
     } catch (error) {
-      res.status(500).json({ msg: "Error  del servidor" });
+      console.log("Error getting a product by id");
     }
   }
 

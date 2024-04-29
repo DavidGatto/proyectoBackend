@@ -3,9 +3,10 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const app = express();
 const exphbs = require("express-handlebars");
-const socket = require("socket.io");
+const winston = require("winston");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config.js");
+
 const PUERTO = 8080;
 require("./database.js");
 
@@ -14,6 +15,7 @@ const cartsRouter = require("./routes/carts.router.js");
 const viewsRouter = require("./routes/views.router.js");
 const userRouter = require("./routes/user.router.js");
 const sessionRouter = require("./routes/session.router.js");
+const loggerRouter = require("./routes/logger.router.js");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -34,6 +36,19 @@ app.use(
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+const addLogger = (req, res, next) => {
+  // Configurar el logger
+  const logger = winston.createLogger({
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({ filename: "errors.log" }),
+    ],
+  });
+  req.logger = logger;
+  next();
+};
+
+app.use(addLogger);
 
 //Routes
 app.use("/api", productsRouter);
@@ -41,6 +56,7 @@ app.use("/api", cartsRouter);
 app.use("/", viewsRouter);
 app.use("/api/users", userRouter);
 app.use("/api/sessions", sessionRouter);
+app.use("/loggertest", loggerRouter);
 
 // Handlebars
 app.engine("handlebars", exphbs.engine());
@@ -63,4 +79,6 @@ const httpServer = app.listen(PUERTO, () => {
 });
 
 const SocketManager = require("./socket/socket.manager.js");
+const logger = require("./utils/logger.js");
+
 new SocketManager(httpServer);

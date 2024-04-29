@@ -1,0 +1,19 @@
+info: Connection to database successful.
+{"level":"error","message":"Error message"}
+{"level":"warn","message":"Warning message"}
+{"level":"info","message":"Info message"}
+info: Connection to database successful.
+{"level":"error","message":"Error message"}
+{"level":"warn","message":"Warning message"}
+{"level":"info","message":"Info message"}
+info: Connection to database successful.
+{"level":"error","message":"Error message"}
+{"level":"warn","message":"Warning message"}
+{"level":"info","message":"Info message"}
+info: Connection to database successful.
+{"level":"error","message":"Error message"}
+{"level":"warn","message":"Warning message"}
+{"level":"info","message":"Info message"}
+{"level":"error","message":"Error message"}
+{"level":"warn","message":"Warning message"}
+{"level":"info","message":"Info message"}

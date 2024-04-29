@@ -8,6 +8,7 @@ const ProductRepository = require("../repositories/product.repository.js");
 const productRepository = new ProductRepository();
 const CartUtils = require("../utils/cartUtil.js");
 const cartUtils = new CartUtils();
+const UserModel = require("../models/user.model.js");
 
 class CartController {
   // Ruta para crear un nuevo carrito
@@ -38,20 +39,42 @@ class CartController {
   }
 
   // Ruta para eliminar un producto de un carrito específico
-  async deleteProdFromCart(req, res) {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
+  async deleteProductFromCart(req, res) {
+    const { cid, pid } = req.params;
 
     try {
-      const updatedCart = await cartRepository.deleteProduct(cartId, productId);
-      res.json({
+      // Encontrar el carrito por su ID
+      const cart = await Cart.findById(cid);
+      if (!cart) {
+        return res.status(404).json({ error: "Carrito no encontrado" });
+      }
+
+      // Obtener el array de productos del carrito
+      let products = cart.products;
+
+      // Encontrar el índice del producto que deseas eliminar dentro del array de productos
+      const index = products.findIndex((item) => item.product._id === pid);
+      if (index === -1) {
+        return res
+          .status(404)
+          .json({ error: "Producto no encontrado en el carrito" });
+      }
+
+      // Eliminar el producto del array de productos
+      products.splice(index, 1);
+
+      // Guardar el carrito actualizado en la base de datos
+      cart.products = products;
+      await cart.save();
+
+      // Devolver una respuesta exitosa
+      return res.json({
         status: "success",
         message: "Producto eliminado del carrito correctamente",
-        updatedCart,
       });
     } catch (error) {
-      console.error("Error al eliminar producto del carrito", error);
-      res.status(500).json({ error: "Error interno del servidor" });
+      console.error("Error al eliminar el producto del carrito", error);
+      return res.status(500).json({ error: "Error interno del servidor" });
     }
   }
 

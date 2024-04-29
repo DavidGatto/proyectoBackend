@@ -13,6 +13,7 @@ const configObject = {
   clientidgithub: process.env.CLIENTIDGITHUB,
   secretclientgithub: process.env.SECRETCLIENTGITHUB,
   callbackurlgithub: process.env.CALLBACKURLGITHUB,
+  node_env: process.env.NODE_ENV,
 };
 
 module.exports = configObject;

@@ -1,4 +1,13 @@
 function deleteProduct(cartId, productId) {
+  if (typeof cartId !== "string" || cartId.trim() === "") {
+    console.error("Invalid cart ID:", cartId);
+    return;
+  }
+
+  if (typeof productId !== "string" || productId.trim() === "") {
+    console.error("Invalid product ID:", productId);
+    return;
+  }
   console.log(
     "Deleting product with ID:",
     productId,

@@ -10,9 +10,9 @@ router.get("/", viewsController.login);
 
 router.get("/api/products", viewsController.getProducts);
 
-router.get("/products/:prodId", viewsController.getProductById);
+router.get("/products/:productId", viewsController.getProductById);
 
-router.get("/api/carts/:cid", viewsController.getCartById);
+router.get("/api/carts/:cid", viewsController.renderCart);
 
 router.get("/realtimeproducts", viewsController.renderRealTimeProducts);
 router.get("/chat", viewsController.renderChat);

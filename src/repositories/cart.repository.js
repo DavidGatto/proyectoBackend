@@ -119,7 +119,7 @@ class CartManager {
       if (!cart) {
         throw new Error("Cart not found");
       }
-
+      logger.info(`Cart cleared: ${JSON.stringify(cart)}`);
       return cart;
     } catch (error) {
       throw new Error("Error");

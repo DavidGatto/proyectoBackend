@@ -11,13 +11,12 @@
 
     {{#each products}}
       <div>
-        <p>Title: {{title}}</p>
+        <p>Title: {{this.title}}</p>
         <p>Quantity: {{quantity}}</p>
-        <p>ID: {{_id}}</p>
+        <p>ID: {{this._id}}</p>
         <p>Price: {{price}}</p>
-
         <button
-          onclick="deleteProduct('{{cartId}}', '{{this._id}}')"
+          onclick="deleteProduct('{{cartId}}', '{{this.products.product._id}}')"
         >Remove</button>
 
       </div>
@@ -27,6 +26,8 @@
 
     <button onclick="completePurchase('{{cartId}}')">Check Out</button>
 
-    <script src="/js/cart.js"></script>
+    <script src="/js/cart.js">
+
+    </script>
   </body>
 </html>
