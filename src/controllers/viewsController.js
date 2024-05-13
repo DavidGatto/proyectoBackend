@@ -143,6 +143,18 @@ class ViewsController {
     }
     res.json(products);
   }
+
+  async renderResetPassword(req, res) {
+    res.render("passwordreset");
+  }
+
+  async renderCambioPassword(req, res) {
+    res.render("passwordchange");
+  }
+
+  async renderConfirmacion(req, res) {
+    res.render("shopping-confirmation");
+  }
 }
 
 module.exports = ViewsController;

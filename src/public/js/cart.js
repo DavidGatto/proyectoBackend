@@ -49,23 +49,23 @@ function clearCart(cartId) {
     });
 }
 
-function completePurchase(cartId) {
-  console.log("Completing purchase for cart with ID:", cartId);
+// function completePurchase(cartId) {
+//   console.log("Completing purchase for cart with ID:", cartId);
 
-  fetch(`/api/carts/${cartId}/purchase`, {
-    method: "POST",
-  })
-    .then((response) => {
-      // Verificar el estado de la respuesta HTTP
-      if (!response.ok) {
-        throw new Error(
-          "Error completing the purchase. HTTP status: " + response.status
-        );
-      }
-      // Recargar la página después de completar la compra
-      location.reload();
-    })
-    .catch((error) => {
-      console.error("Error completing purchase:", error.message);
-    });
-}
+//   fetch(`/api/carts/${cartId}/purchase`, {
+//     method: "POST",
+//   })
+//     .then((response) => {
+//       // Verificar el estado de la respuesta HTTP
+//       if (!response.ok) {
+//         throw new Error(
+//           "Error completing the purchase. HTTP status: " + response.status
+//         );
+//       }
+//       // Recargar la página después de completar la compra
+//       location.reload();
+//     })
+//     .catch((error) => {
+//       console.error("Error completing purchase:", error.message);
+//     });
+// }

@@ -15,4 +15,7 @@ router.post(
 
 router.get("/failregister", userController.failRegister);
 
+router.post("/requestPasswordReset", userController.requestPasswordReset); // Nueva ruta
+router.post("/reset-password", userController.resetPassword);
+
 module.exports = router;

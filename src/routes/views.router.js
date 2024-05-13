@@ -17,4 +17,8 @@ router.get("/api/carts/:cid", viewsController.renderCart);
 router.get("/realtimeproducts", viewsController.renderRealTimeProducts);
 router.get("/chat", viewsController.renderChat);
 router.get("/mockingproducts", viewsController.mockingProducts);
+
+router.get("/reset-password", viewsController.renderResetPassword);
+router.get("/password", viewsController.renderCambioPassword);
+router.get("/confirmation-shipment", viewsController.renderConfirmacion);
 module.exports = router;

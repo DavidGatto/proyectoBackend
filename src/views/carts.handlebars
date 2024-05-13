@@ -23,8 +23,9 @@
     {{/each}}
 
     <button onclick="clearCart('{{cartId}}')">Clear Cart</button>
-
-    <button onclick="completePurchase('{{cartId}}')">Check Out</button>
+    <form method="post" action="/api/carts/{{cartId}}/purchase">
+      <button type="submit">Check Out</button>
+    </form>
 
     <script src="/js/cart.js">
 

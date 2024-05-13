@@ -1,5 +1,6 @@
-const UserDTO = require("../dto/user.dto.js");
-const CartModel = require("../models/cart.model.js");
+const UserDTO = require("../dto/user.dto");
+const UserModel = require("../models/user.model.js");
+
 class SessionController {
   logout(req, res) {
     if (req.session.login) {
@@ -30,6 +31,7 @@ class SessionController {
     };
 
     req.session.login = true;
+    console.log(req.session.user); // Agrega este console.log para verificar los datos almacenados en la sesión
 
     res.redirect("/api/products");
   }
@@ -48,14 +50,10 @@ class SessionController {
   }
 
   async current(req, res) {
-    //Con DTO:
-    const userDto = new UserDTO(
-      req.user.first_name,
-      req.user.last_name,
-      req.user.role
-    );
+    const { first_name, last_name, age, email, role } = req.session.user;
+    const userDto = new UserDTO(first_name, last_name, age, email, role);
 
-    res.render("profile", { user: userDto });
+    res.render("current", { user: userDto });
   }
 }
 
