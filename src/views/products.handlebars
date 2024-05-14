@@ -6,9 +6,10 @@
 
     <p>Email: {{user.email}}</p>
     <p>Age: {{user.age}}</p>
-    <p>Rol: {{user.role}}</p>
+    <p>Rol: {{role}}</p>
   </div>
   <a class="mb-3" href="/api/sessions/logout">Logout</a>
+    <a class="mb-3" href="/api/sessions/current">Profile</a>
   <h1 class="text-center">Product List</h1>
   {{#each products}}
     <div class="card" style="width: 18rem;">

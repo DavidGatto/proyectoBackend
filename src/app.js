@@ -28,7 +28,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl:
         "mongodb+srv://daviddgatto:12345@coderdb.bnklr4n.mongodb.net/ecommerce?retryWrites=true&w=majority",
-      ttl: 100,
+      ttl: 300,
     }),
   })
 );

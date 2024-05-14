@@ -29,4 +29,6 @@ router.get(
 
 router.get("/logout", sessionController.logout);
 
+router.put("/premium/:uid", sessionController.changeRolePremium);
+
 module.exports = router;

@@ -1,5 +1,22 @@
-<h1>My profile</h1>
-<p>Name: {{user.first_name}} {{user.last_name}} </p>
-<p>Age: {{user.age}} </p>
-<p>Mail: {{user.email}} </p>
-<p>Role: {{user.role}}</p>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>My Profile</h1>
+      <p><strong>Name:</strong> {{user.first_name}} {{user.last_name}}</p>
+      <p><strong>Age:</strong> {{user.age}}</p>
+      <p><strong>Email:</strong> {{user.email}}</p>
+      <p><strong>Role:</strong> {{user.role}}</p>
+      <a class="mb-3" href="/api/sessions/logout">Logout</a>
+
+      {{#if this.isAdmin}}
+        <a class="btn btn-primary" href="/realtimeproducts">Modify Products</a>
+      {{else}}
+        {{#if this.isPremium}}
+          <a class="btn btn-warning" href="/realtimeproducts">Premium Panel</a>
+        {{/if}}
+        <a class="btn btn-success" href="/chat">Live Chat</a>
+        <a class="btn btn-info" href="/api/products">Store</a>
+      {{/if}}
+    </div>
+  </div>
+</div>

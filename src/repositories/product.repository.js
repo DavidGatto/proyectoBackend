@@ -11,6 +11,7 @@ class ProductManager {
     thumbnails = "Sin imagen",
     code,
     stock,
+    owner,
   }) {
     try {
       if (!title || !description || !price || !code || !stock || !category) {
@@ -23,6 +24,8 @@ class ProductManager {
         throw new Error("El código debe ser único");
       }
 
+      console.log("Owner", owner);
+
       const newProduct = new ProductModel({
         title,
         description,
@@ -32,6 +35,7 @@ class ProductManager {
         stock,
         category,
         status: true,
+        owner,
       });
 
       await newProduct.save();

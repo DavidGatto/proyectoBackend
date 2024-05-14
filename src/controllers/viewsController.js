@@ -40,6 +40,7 @@ class ViewsController {
         currentPage: productsList.page,
         totalPages: productsList.totalPages,
         user: req.session.user,
+        role: req.user.role,
         cartId,
       });
     } catch (error) {
@@ -124,8 +125,9 @@ class ViewsController {
   }
 
   async renderRealTimeProducts(req, res) {
+    const user = req.user;
     try {
-      res.render("realtimeproducts");
+      res.render("realtimeproducts", { role: user.role, email: user.email });
     } catch (error) {
       console.log("error en la vista real time", error);
       res.status(500).json({ error: "Error interno del servidor" });

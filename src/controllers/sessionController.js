@@ -17,7 +17,7 @@ class SessionController {
 
     let role = "usuario";
 
-    if (req.user.email === "adminCoder@coder.com") {
+    if (req.user.email === "adminCoder@coderhouse.com") {
       role = "admin";
     }
 
@@ -31,9 +31,8 @@ class SessionController {
     };
 
     req.session.login = true;
-    console.log(req.session.user); // Agrega este console.log para verificar los datos almacenados en la sesión
 
-    res.redirect("/api/products");
+    res.redirect("/api/sessions/current");
   }
 
   async failLogin(req, res) {
@@ -50,10 +49,36 @@ class SessionController {
   }
 
   async current(req, res) {
-    const { first_name, last_name, age, email, role } = req.session.user;
+    const isPremium = req.user.role === "premium";
+    const isAdmin = req.user.role === "admin";
+    const { first_name, last_name, age, email, role } = req.user;
     const userDto = new UserDTO(first_name, last_name, age, email, role);
 
-    res.render("current", { user: userDto });
+    res.render("current", { user: userDto, isPremium, isAdmin });
+  }
+
+  async changeRolePremium(req, res) {
+    try {
+      const { uid } = req.params;
+
+      const user = await UserModel.findById(uid);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const newRole = user.role === "usuario" ? "premium" : "usuario";
+
+      const updated = await UserModel.findByIdAndUpdate(
+        uid,
+        { role: newRole },
+        { new: true }
+      );
+      res.json(updated);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
 }
 
