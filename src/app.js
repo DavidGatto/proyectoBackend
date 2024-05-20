@@ -82,3 +82,21 @@ const SocketManager = require("./socket/socket.manager.js");
 const logger = require("./utils/logger.js");
 
 new SocketManager(httpServer);
+
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUiExpress = require("swagger-ui-express");
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentacion de la App Adoptame",
+      description:
+        "App dedicada a encontrar familias para los perritos de la calle",
+    },
+  },
+  apis: ["./src/docs/**/*.yaml"],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
