@@ -1,4 +1,4 @@
-const configObject = require("../config/config.js");
+import configObject from "../config/config.js";
 const { node_env } = configObject;
 
 class LoggerController {
@@ -12,4 +12,4 @@ class LoggerController {
   }
 }
 
-module.exports = LoggerController;
+export default LoggerController;

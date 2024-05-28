@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const CartController = require("../controllers/cartController.js");
+import CartController from "../controllers/cartController.js";
 const cartController = new CartController();
 
 // Ruta para crear un nuevo carrito
@@ -23,14 +23,12 @@ router.delete(
 router.put("/carts/:cid", cartController.updateCart);
 
 // Ruta para actualizar la cantidad de ejemplares de un producto en un carrito específico
-
 router.put("/carts/:cid/products/:pid", cartController.updateProdQuantity);
 
 // Ruta para eliminar todos los productos de un carrito específico
-
 router.delete("/carts/:cid", cartController.emptyCart);
 
 // Ruta donde se ejecuta el proceso de finalización de compra
 router.post("/carts/:cid/purchase", cartController.completePurchase);
 
-module.exports = router;
+export default router;

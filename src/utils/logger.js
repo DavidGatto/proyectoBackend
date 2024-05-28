@@ -1,5 +1,6 @@
-const winston = require("winston");
-const configObject = require("../config/config.js"); // Variables de entorno
+import winston from "winston";
+import configObject from "../config/config.js"; // Importar usando import en lugar de require
+
 const { node_env } = configObject;
 
 // Ejemplo configurando nuestros propios niveles
@@ -48,7 +49,7 @@ const loggerProduction = winston.createLogger({
   ],
 });
 
-// Se determina qué logger utilizamos segun el entorno
+// Se determina qué logger utilizamos según el entorno
 const logger = node_env === "desarrollo" ? loggerDevelopment : loggerProduction;
 
-module.exports = logger; // Se exporta el logger para utilizarlo en un middleware
+export default logger; // Se exporta el logger para utilizarlo en un middleware

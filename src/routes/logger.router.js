@@ -1,10 +1,10 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const LoggerController = require("../controllers/loggerController.js");
+import LoggerController from "../controllers/loggerController.js";
 const loggerController = new LoggerController();
 
 // Ruta GET /loggertest - se testean los errores
 router.get("/", loggerController.testingLogger);
 
-module.exports = router; // Asegúrate de exportar el router
+export default router; // Asegúrate de exportar el router

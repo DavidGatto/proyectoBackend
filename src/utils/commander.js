@@ -1,7 +1,6 @@
-const { Command } = require("commander");
+import { Command } from "commander";
 const program = new Command();
 
-program.option("--mode <mode>", "modo de trabajo", "produccion");
+program.option("--mode <mode>", "work mode", "production");
 program.parse();
-
-module.exports = program;
+export default program;

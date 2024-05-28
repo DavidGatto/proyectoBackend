@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
+import passport from "passport";
 const router = express.Router();
-const passport = require("passport");
 
-const SessionController = require("../controllers/sessionController.js");
+import SessionController from "../controllers/sessionController.js";
 const sessionController = new SessionController();
 
 router.post(
@@ -31,4 +31,4 @@ router.get("/logout", sessionController.logout);
 
 router.put("/premium/:uid", sessionController.changeRolePremium);
 
-module.exports = router;
+export default router;

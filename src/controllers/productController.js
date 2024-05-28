@@ -1,5 +1,5 @@
-const productManager = require("../repositories/product.repository.js");
-const manager = new productManager();
+import ProductManager from "../repositories/product.repository.js";
+const manager = new ProductManager();
 
 class ProductController {
   // Ruta para obtener un producto por su id
@@ -69,4 +69,4 @@ class ProductController {
   }
 }
 
-module.exports = ProductController;
+export default ProductController;

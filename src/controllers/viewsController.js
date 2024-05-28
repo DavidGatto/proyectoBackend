@@ -1,8 +1,9 @@
-const ProductManager = require("../repositories/product.repository.js");
-const CartManager = require("../repositories/cart.repository.js");
+import ProductManager from "../repositories/product.repository.js";
+import CartManager from "../repositories/cart.repository.js";
+import { faker } from "@faker-js/faker";
+
 const manager = new ProductManager();
 const managerc = new CartManager();
-const { faker } = require("@faker-js/faker");
 
 class ViewsController {
   async getProducts(req, res) {
@@ -50,11 +51,12 @@ class ViewsController {
       });
     }
   }
+
   async getProductById(req, res) {
     try {
       const prodId = req.params.cid; // Cambiar de req.params.prodId a req.params.cid
 
-      const product = await prodService.getProductById(prodId);
+      const product = await manager.getProductById(prodId);
 
       res.render("productDetail", {
         title: "Product Detail",
@@ -71,7 +73,7 @@ class ViewsController {
     const cartId = req.params.cid;
     console.log("Cart ID:", cartId);
     try {
-      const carrito = await cartRepository.obtenerProductosDeCarrito(cartId);
+      const carrito = await managerc.obtenerProductosDeCarrito(cartId);
 
       if (!carrito) {
         console.log("No existe ese carrito con el id");
@@ -159,4 +161,4 @@ class ViewsController {
   }
 }
 
-module.exports = ViewsController;
+export default ViewsController;

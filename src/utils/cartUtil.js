@@ -25,4 +25,4 @@ class CartUtils {
   }
 }
 
-module.exports = CartUtils;
+export default CartUtils;

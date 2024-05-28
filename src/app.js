@@ -1,21 +1,23 @@
-const express = require("express");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const app = express();
-const exphbs = require("express-handlebars");
-const winston = require("winston");
-const passport = require("passport");
-const initializePassport = require("./config/passport.config.js");
+import express from "express";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import exphbs from "express-handlebars";
+import winston from "winston";
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+import "./database.js";
+import productsRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
+import viewsRouter from "./routes/views.router.js";
+import userRouter from "./routes/user.router.js";
+import sessionRouter from "./routes/session.router.js";
+import loggerRouter from "./routes/logger.router.js";
+import SocketManager from "./socket/socket.manager.js";
+import logger from "./utils/logger.js";
 
 const PUERTO = 8080;
-require("./database.js");
 
-const productsRouter = require("./routes/products.router.js");
-const cartsRouter = require("./routes/carts.router.js");
-const viewsRouter = require("./routes/views.router.js");
-const userRouter = require("./routes/user.router.js");
-const sessionRouter = require("./routes/session.router.js");
-const loggerRouter = require("./routes/logger.router.js");
+const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -68,7 +70,7 @@ exphbs.create({
   allowProtoPropertiesByDefault: true,
 });
 
-const handlebars = require("handlebars");
+import handlebars from "handlebars";
 
 handlebars.registerHelper("getProperty", function (object, property) {
   return object[property];
@@ -78,7 +80,5 @@ const httpServer = app.listen(PUERTO, () => {
   console.log(`Servidor escuchando en el puerto ${PUERTO}`);
 });
 
-const SocketManager = require("./socket/socket.manager.js");
-const logger = require("./utils/logger.js");
-
 new SocketManager(httpServer);
+export default app;

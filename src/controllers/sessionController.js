@@ -1,5 +1,5 @@
-const UserDTO = require("../dto/user.dto");
-const UserModel = require("../models/user.model.js");
+import UserDTO from "../dto/user.dto.js";
+import UserModel from "../models/user.model.js";
 
 class SessionController {
   logout(req, res) {
@@ -82,4 +82,4 @@ class SessionController {
   }
 }
 
-module.exports = SessionController;
+export default SessionController;

@@ -1,15 +1,15 @@
-const Cart = require("../models/cart.model.js");
-const CartManager = require("../repositories/cart.repository.js");
+import Cart from "../models/cart.model.js";
+import CartManager from "../repositories/cart.repository.js";
 const managerc = new CartManager();
-const TicketModel = require("../models/ticket.model.js");
-const CartRepository = require("../repositories/cart.repository.js");
+import TicketModel from "../models/ticket.model.js";
+import CartRepository from "../repositories/cart.repository.js";
 const cartRepository = new CartRepository();
-const ProductRepository = require("../repositories/product.repository.js");
+import ProductRepository from "../repositories/product.repository.js";
 const productRepository = new ProductRepository();
-const CartUtils = require("../utils/cartUtil.js");
+import CartUtils from "../utils/cartUtil.js";
 const cartUtils = new CartUtils();
-const UserModel = require("../models/user.model.js");
-const EmailManager = require("../repositories/email.repository.js");
+import UserModel from "../models/user.model.js";
+import EmailManager from "../repositories/email.repository.js";
 const emailManager = new EmailManager();
 
 class CartController {
@@ -210,4 +210,4 @@ class CartController {
   }
 }
 
-module.exports = CartController;
+export default CartController;

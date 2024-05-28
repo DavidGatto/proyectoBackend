@@ -1,9 +1,10 @@
-const CartModel = require("../models/cart.model");
-const EmailManager = require("../repositories/email.repository.js");
+import CartModel from "../models/cart.model.js";
+import EmailManager from "../repositories/email.repository.js";
+import UserModel from "../models/user.model.js";
+import crypto from "crypto";
+import { createHash, isValidPassword } from "../utils/hashBcrypt.js";
+
 const emailManager = new EmailManager();
-const UserModel = require("../models/user.model.js");
-const crypto = require("crypto");
-const { createHash, isValidPassword } = require("../utils/hashBcrypt.js");
 
 class UserController {
   async register(req, res) {
@@ -112,4 +113,4 @@ class UserController {
   }
 }
 
-module.exports = UserController;
+export default UserController;

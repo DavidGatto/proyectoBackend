@@ -1,5 +1,5 @@
-const dotenv = require("dotenv");
-const program = require("../utils/commander");
+import dotenv from "dotenv";
+import program from "../utils/commander.js";
 
 const { mode } = program.opts();
 
@@ -16,4 +16,4 @@ const configObject = {
   node_env: process.env.NODE_ENV,
 };
 
-module.exports = configObject;
+export default configObject;

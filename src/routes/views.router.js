@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const ViewsController = require("../controllers/viewsController.js");
+import ViewsController from "../controllers/viewsController.js";
 const viewsController = new ViewsController();
 
 router.get("/register", viewsController.register);
@@ -21,4 +21,4 @@ router.get("/mockingproducts", viewsController.mockingProducts);
 router.get("/reset-password", viewsController.renderResetPassword);
 router.get("/password", viewsController.renderCambioPassword);
 router.get("/confirmation-shipment", viewsController.renderConfirmacion);
-module.exports = router;
+export default router;

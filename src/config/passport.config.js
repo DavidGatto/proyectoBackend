@@ -1,10 +1,8 @@
-const passport = require("passport");
-const local = require("passport-local");
-const GitHubStrategy = require("passport-github2");
-const UserModel = require("../models/user.model.js");
-const { createHash, isValidPassword } = require("../utils/hashBcrypt.js");
-
-const LocalStrategy = local.Strategy;
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as GitHubStrategy } from "passport-github2";
+import UserModel from "../models/user.model.js";
+import { createHash, isValidPassword } from "../utils/hashBcrypt.js";
 
 const initializePassport = () => {
   passport.use(
@@ -138,4 +136,4 @@ passport.use(
   )
 );
 
-module.exports = initializePassport;
+export default initializePassport;

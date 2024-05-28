@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
+import passport from "passport";
 const router = express.Router();
-const passport = require("passport");
 
-const UserController = require("../controllers/userController.js");
+import UserController from "../controllers/userController.js";
 const userController = new UserController();
 
 router.post(
@@ -18,4 +18,4 @@ router.get("/failregister", userController.failRegister);
 router.post("/requestPasswordReset", userController.requestPasswordReset); // Nueva ruta
 router.post("/reset-password", userController.resetPassword);
 
-module.exports = router;
+export default router;
