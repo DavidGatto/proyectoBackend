@@ -85,7 +85,7 @@ class SessionController {
       }
 
       // Verificar si hay al menos un documento cargado
-      if (user.documents.length > 0) {
+      if (user.documents.length >= 3) {
         // Cambiar el rol del usuario a "premium"
         await userRepository.updateUserRole(uid, "premium");
         return true; // Indica que se actualizó el rol correctamente
@@ -146,7 +146,7 @@ class SessionController {
       }
 
       // Envía la respuesta después de que todas las operaciones hayan sido completadas exitosamente
-      res.status(200).send("Documentos subidos exitosamente");
+      res.redirect("/api/sessions/current");
     } catch (error) {
       console.error(error);
       // Envía una respuesta de error si ocurre algún problema
