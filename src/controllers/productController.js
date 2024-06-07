@@ -6,15 +6,16 @@ class ProductController {
   async getProductById(req, res) {
     try {
       const pid = req.params.pid;
-
       const search = await manager.getProductById(pid);
 
       if (search) {
         // Si se encuentra el producto lo devuelve
-        return res.send(search);
+        return res.status(200).send(search);
       } else {
         // Si no se encuentra el producto devuelve un mensaje de error
-        return res.send("No se encontró el producto");
+        return res
+          .status(404)
+          .send({ message: `A product with the id ${pid} was not found` });
       }
     } catch (error) {
       console.error(error);

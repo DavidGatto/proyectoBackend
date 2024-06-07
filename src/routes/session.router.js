@@ -31,4 +31,15 @@ router.get("/logout", sessionController.logout);
 
 router.put("/premium/:uid", sessionController.changeRolePremium);
 
+import upload from "../middleware/multer.js";
+router.post(
+  "/:uid/documents",
+  upload.fields([
+    { name: "document" },
+    { name: "products" },
+    { name: "profile" },
+  ]),
+  sessionController.uploadDocuments.bind(sessionController)
+);
+
 export default router;

@@ -1,5 +1,9 @@
 import UserDTO from "../dto/user.dto.js";
 import UserModel from "../models/user.model.js";
+import UserRepository from "../repositories/user.repository.js";
+import { isValidPassword } from "../utils/hashBcrypt.js";
+
+const userRepository = new UserRepository();
 
 class SessionController {
   logout(req, res) {
@@ -10,29 +14,44 @@ class SessionController {
   }
 
   async login(req, res) {
-    if (!req.user)
-      return res
-        .status(400)
-        .send({ status: "error", message: "Datos incorrectos" });
+    const { email, password } = req.body;
+    try {
+      const usuarioEncontrado = await userRepository.findByEmail(email);
 
-    let role = "usuario";
+      if (!usuarioEncontrado) {
+        return res.status(401).send("Usuario no válido");
+      }
 
-    if (req.user.email === "adminCoder@coderhouse.com") {
-      role = "admin";
+      const esValido = isValidPassword(password, usuarioEncontrado);
+      if (!esValido) {
+        return res.status(401).send("Contraseña incorrecta");
+      }
+
+      const role =
+        usuarioEncontrado.email === "adminCoder@coderhouse.com"
+          ? "admin"
+          : "usuario";
+
+      usuarioEncontrado.last_connection = new Date();
+      await usuarioEncontrado.save();
+
+      req.session.user = {
+        id: usuarioEncontrado.id,
+        first_name: usuarioEncontrado.first_name,
+        last_name: usuarioEncontrado.last_name,
+        age: usuarioEncontrado.age,
+        email: usuarioEncontrado.email,
+        role: role,
+        cart: usuarioEncontrado.cart || null,
+      };
+
+      req.session.login = true;
+
+      res.redirect("/api/sessions/current");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error interno del servidor");
     }
-
-    req.session.user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      age: req.user.age,
-      email: req.user.email,
-      role: role,
-      cart: null,
-    };
-
-    req.session.login = true;
-
-    res.redirect("/api/sessions/current");
   }
 
   async failLogin(req, res) {
@@ -57,27 +76,69 @@ class SessionController {
     res.render("current", { user: userDto, isPremium, isAdmin });
   }
 
-  async changeRolePremium(req, res) {
+  async changeRolePremium(uid, res) {
     try {
-      const { uid } = req.params;
-
-      const user = await UserModel.findById(uid);
+      const user = await userRepository.findById(uid);
 
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: "Usuario no encontrado" });
       }
 
-      const newRole = user.role === "usuario" ? "premium" : "usuario";
-
-      const updated = await UserModel.findByIdAndUpdate(
-        uid,
-        { role: newRole },
-        { new: true }
-      );
+      // Cambiar el rol del usuario a "premium"
+      const updated = await userRepository.updateUserRole(uid, "premium");
       res.json(updated);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  }
+
+  async uploadDocuments(req, res) {
+    const { uid } = req.params;
+    const uploadedDocuments = req.files;
+
+    try {
+      const user = await userRepository.findById(uid);
+
+      if (!user) {
+        return res.status(404).send("Usuario no encontrado");
+      }
+
+      if (uploadedDocuments) {
+        if (uploadedDocuments.document) {
+          user.documents = user.documents.concat(
+            uploadedDocuments.document.map((doc) => ({
+              name: doc.originalname,
+              reference: doc.path,
+            }))
+          );
+        }
+        if (uploadedDocuments.products) {
+          user.documents = user.documents.concat(
+            uploadedDocuments.products.map((doc) => ({
+              name: doc.originalname,
+              reference: doc.path,
+            }))
+          );
+        }
+        if (uploadedDocuments.profile) {
+          user.documents = user.documents.concat(
+            uploadedDocuments.profile.map((doc) => ({
+              name: doc.originalname,
+              reference: doc.path,
+            }))
+          );
+        }
+      }
+
+      await user.save();
+
+      // Envía la respuesta solo si todo salió bien
+      res.status(200).send("Documentos subidos exitosamente");
+    } catch (error) {
+      console.error(error);
+      // Envía una respuesta de error si ocurre algún problema
+      res.status(500).send("Error interno del servidor");
     }
   }
 }

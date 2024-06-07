@@ -28,8 +28,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://daviddgatto:12345@coderdb.bnklr4n.mongodb.net/ecommerce?retryWrites=true&w=majority",
+      mongoUrl: process.env.MONGO_URL,
       ttl: 300,
     }),
   })
@@ -39,7 +38,6 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 const addLogger = (req, res, next) => {
-  // Configurar el logger
   const logger = winston.createLogger({
     transports: [
       new winston.transports.Console(),

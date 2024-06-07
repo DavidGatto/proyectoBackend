@@ -16,7 +16,63 @@
         {{/if}}
         <a class="btn btn-success" href="/chat">Live Chat</a>
         <a class="btn btn-info" href="/api/products">Store</a>
+        {{#unless this.isPremium}}
+          <h2 id="togglePremiumForm" class="interactive-header">¿Quieres ser
+            premium?</h2>
+          <form
+            id="premiumForm"
+            action="/api/users/uploadDocuments/{{user._id}}"
+            method="POST"
+            enctype="multipart/form-data"
+            style="display: none;"
+          >
+            <div class="form-group">
+              <label for="identificacion">Identificación:</label>
+              <input
+                type="file"
+                class="form-control"
+                id="identificacion"
+                name="document"
+              />
+            </div>
+            <div class="form-group">
+              <label for="comprobanteDomicilio">Comprobante de Domicilio:</label>
+              <input
+                type="file"
+                class="form-control"
+                id="comprobanteDomicilio"
+                name="document"
+              />
+            </div>
+            <div class="form-group">
+              <label for="comprobanteEstadoCuenta">Comprobante de Estado de
+                Cuenta:</label>
+              <input
+                type="file"
+                class="form-control"
+                id="comprobanteEstadoCuenta"
+                name="document"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Cargar Documentos</button>
+          </form>
+        {{/unless}}
       {{/if}}
     </div>
   </div>
 </div>
+
+<style>
+  .interactive-header { font-size: 1.5em; /* Reduce el tamaño de la fuente */
+  cursor: pointer; /* Cambia el cursor al pasar el mouse */ color: #007bff; /*
+  Cambia el color para que parezca un enlace */ transition: color 0.3s ease; /*
+  Añade una transición suave */ } .interactive-header:hover { color: #0056b3; /*
+  Cambia el color al pasar el mouse */ }
+</style>
+
+<script>
+  document.getElementById('togglePremiumForm').addEventListener('click',
+  function() { const premiumForm = document.getElementById('premiumForm'); if
+  (premiumForm.style.display === 'none') { premiumForm.style.display = 'block';
+  } else { premiumForm.style.display = 'none'; } });
+</script>
