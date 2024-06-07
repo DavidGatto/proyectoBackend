@@ -21,7 +21,7 @@
             premium?</h2>
           <form
             id="premiumForm"
-            action="/api/users/uploadDocuments/{{user._id}}"
+            action="/api/sessions/{{user._id}}/documents"
             method="POST"
             enctype="multipart/form-data"
             style="display: none;"
@@ -32,7 +32,8 @@
                 type="file"
                 class="form-control"
                 id="identificacion"
-                name="document"
+                name="profile"
+                required
               />
             </div>
             <div class="form-group">
@@ -42,6 +43,7 @@
                 class="form-control"
                 id="comprobanteDomicilio"
                 name="document"
+                required
               />
             </div>
             <div class="form-group">
@@ -51,11 +53,13 @@
                 type="file"
                 class="form-control"
                 id="comprobanteEstadoCuenta"
-                name="document"
+                name="products"
+                required
               />
             </div>
             <button type="submit" class="btn btn-primary mt-3">Cargar Documentos</button>
           </form>
+
         {{/unless}}
       {{/if}}
     </div>
@@ -63,11 +67,8 @@
 </div>
 
 <style>
-  .interactive-header { font-size: 1.5em; /* Reduce el tamaño de la fuente */
-  cursor: pointer; /* Cambia el cursor al pasar el mouse */ color: #007bff; /*
-  Cambia el color para que parezca un enlace */ transition: color 0.3s ease; /*
-  Añade una transición suave */ } .interactive-header:hover { color: #0056b3; /*
-  Cambia el color al pasar el mouse */ }
+  .interactive-header { font-size: 1.5em; cursor: pointer; color: #007bff;
+  transition: color 0.3s ease; } .interactive-header:hover { color: #0056b3; }
 </style>
 
 <script>

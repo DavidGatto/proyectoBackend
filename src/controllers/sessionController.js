@@ -70,26 +70,34 @@ class SessionController {
   async current(req, res) {
     const isPremium = req.user.role === "premium";
     const isAdmin = req.user.role === "admin";
-    const { first_name, last_name, age, email, role } = req.user;
-    const userDto = new UserDTO(first_name, last_name, age, email, role);
+    const { first_name, last_name, age, email, role, _id } = req.user;
+    const userDto = new UserDTO(first_name, last_name, age, email, role, _id);
 
     res.render("current", { user: userDto, isPremium, isAdmin });
   }
 
-  async changeRolePremium(uid, res) {
+  async changeRolePremium(uid) {
     try {
       const user = await userRepository.findById(uid);
 
       if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+        throw new Error("Usuario no encontrado");
       }
 
-      // Cambiar el rol del usuario a "premium"
-      const updated = await userRepository.updateUserRole(uid, "premium");
-      res.json(updated);
+      // Verificar si hay al menos un documento cargado
+      if (user.documents.length > 0) {
+        // Cambiar el rol del usuario a "premium"
+        await userRepository.updateUserRole(uid, "premium");
+        return true; // Indica que se actualizó el rol correctamente
+      } else {
+        // Si no hay documentos cargados, lanzar un error
+        throw new Error(
+          "El usuario debe cargar al menos un documento antes de cambiar el rol a premium"
+        );
+      }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error interno del servidor" });
+      throw error; // Propaga el error para que se maneje en el llamador
     }
   }
 
@@ -131,9 +139,13 @@ class SessionController {
         }
       }
 
+      // Guardar los cambios en la base de datos
       await user.save();
+      if (user.documents.length > 0) {
+        await this.changeRolePremium(uid, res);
+      }
 
-      // Envía la respuesta solo si todo salió bien
+      // Envía la respuesta después de que todas las operaciones hayan sido completadas exitosamente
       res.status(200).send("Documentos subidos exitosamente");
     } catch (error) {
       console.error(error);
