@@ -128,8 +128,13 @@ class ViewsController {
 
   async renderRealTimeProducts(req, res) {
     const user = req.user;
+    const isAdmin = user.role === "admin";
     try {
-      res.render("realtimeproducts", { role: user.role, email: user.email });
+      res.render("realtimeproducts", {
+        role: user.role,
+        email: user.email,
+        isAdmin,
+      });
     } catch (error) {
       console.log("error en la vista real time", error);
       res.status(500).json({ error: "Error interno del servidor" });

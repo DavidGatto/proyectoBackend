@@ -2,6 +2,8 @@ import UserDTO from "../dto/user.dto.js";
 import UserModel from "../models/user.model.js";
 import UserRepository from "../repositories/user.repository.js";
 import { isValidPassword } from "../utils/hashBcrypt.js";
+import EmailManager from "../repositories/email.repository.js";
+const emailManager = new EmailManager();
 
 const userRepository = new UserRepository();
 
@@ -151,6 +153,39 @@ class SessionController {
       console.error(error);
       // Envía una respuesta de error si ocurre algún problema
       res.status(500).send("Error interno del servidor");
+    }
+  }
+
+  async getAllUsers(req, res) {
+    try {
+      const users = await userRepository.findAll();
+      res.status(200).json(users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res
+        .status(500)
+        .send({ status: "error", message: "Error en el servidor" });
+    }
+  }
+
+  async deleteInactiveUsers(req, res) {
+    try {
+      const days = 2;
+      const inactiveUsers = await userRepository.deleteInactiveUsers(days);
+
+      for (const user of inactiveUsers) {
+        await emailManager.sendMailDeletion(user.email, user.first_name);
+      }
+
+      res.status(200).send({
+        status: "success",
+        message: "Usuarios inactivos eliminados y notificados por correo",
+      });
+    } catch (error) {
+      console.error("Error deleting inactive users:", error);
+      res
+        .status(500)
+        .send({ status: "error", message: "Error en el servidor" });
     }
   }
 }

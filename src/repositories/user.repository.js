@@ -13,6 +13,14 @@ class UserRepository {
     }
   }
 
+  async findAll() {
+    try {
+      return await UserModel.find({}, "first_name last_name email role");
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(user) {
     try {
       return await user.save();
@@ -40,6 +48,27 @@ class UserRepository {
     } catch (error) {
       throw error;
     }
+  }
+
+  async deleteInactiveUsers(days) {
+    const dateLimit = new Date();
+    dateLimit.setDate(dateLimit.getDate() - days);
+
+    const inactiveUsers = await UserModel.find({
+      $or: [
+        { last_connection: { $lt: dateLimit } },
+        { last_connection: { $exists: false } },
+      ],
+    });
+
+    await UserModel.deleteMany({
+      $or: [
+        { last_connection: { $lt: dateLimit } },
+        { last_connection: { $exists: false } },
+      ],
+    });
+
+    return inactiveUsers;
   }
 }
 

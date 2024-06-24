@@ -31,6 +31,8 @@ router.get("/logout", sessionController.logout);
 
 router.put("/premium/:uid", sessionController.changeRolePremium);
 
+router.get("/allusers", sessionController.getAllUsers.bind(sessionController));
+
 import upload from "../middleware/multer.js";
 router.post(
   "/:uid/documents",
@@ -40,6 +42,10 @@ router.post(
     { name: "profile" },
   ]),
   sessionController.uploadDocuments.bind(sessionController)
+);
+router.delete(
+  "/delete",
+  sessionController.deleteInactiveUsers.bind(sessionController)
 );
 
 export default router;

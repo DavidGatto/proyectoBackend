@@ -54,6 +54,27 @@ class EmailManager {
       throw new Error("Error sending email");
     }
   }
+
+  async sendMailDeletion(email, first_name) {
+    try {
+      const mailOptions = {
+        from: "Raze Tech <razetech6@gmail.com>",
+        to: email,
+        subject: "Account deleted due to inactivity",
+        html: `
+          <h1>Account Deleted</h1>
+          <p>Hello ${first_name},</p>
+          <p>Your account has been deleted due to inactivity for the past 2 days.</p>
+          <p>If you have any questions, please contact us.</p>
+        `,
+      };
+
+      await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      throw new Error("Error sending email");
+    }
+  }
 }
 
 export default EmailManager;
