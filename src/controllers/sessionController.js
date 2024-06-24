@@ -188,6 +188,60 @@ class SessionController {
         .send({ status: "error", message: "Error en el servidor" });
     }
   }
+
+  async deleteUserById(req, res) {
+    try {
+      const userId = req.params.id;
+      const result = await userRepository.deleteUserById(userId);
+
+      if (!result) {
+        return res
+          .status(404)
+          .send({ status: "error", message: "User not found" });
+      }
+
+      res
+        .status(200)
+        .send({ status: "success", message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res
+        .status(500)
+        .send({ status: "error", message: "Internal server error" });
+    }
+  }
+
+  async updateUserRole(req, res) {
+    try {
+      const userId = req.params.id;
+      const newRole = req.body.role;
+
+      if (!["admin", "premium", "usuario"].includes(newRole)) {
+        return res
+          .status(400)
+          .send({ status: "error", message: "Invalid role" });
+      }
+
+      const updatedUser = await userRepository.updateUserRole(userId, newRole);
+
+      if (!updatedUser) {
+        return res
+          .status(404)
+          .send({ status: "error", message: "User not found" });
+      }
+
+      res.status(200).send({
+        status: "success",
+        message: "User role updated successfully",
+        user: updatedUser,
+      });
+    } catch (error) {
+      console.error("Error updating user role:", error);
+      res
+        .status(500)
+        .send({ status: "error", message: "Internal server error" });
+    }
+  }
 }
 
 export default SessionController;

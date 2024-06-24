@@ -48,4 +48,8 @@ router.delete(
   sessionController.deleteInactiveUsers.bind(sessionController)
 );
 
+router.delete("/delete/:id", sessionController.deleteUserById);
+
+router.put("/updateRole/:id", sessionController.updateUserRole);
+
 export default router;

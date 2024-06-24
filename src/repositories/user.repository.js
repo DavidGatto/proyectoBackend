@@ -21,6 +21,14 @@ class UserRepository {
     }
   }
 
+  async deleteUserById(id) {
+    try {
+      return await UserModel.findByIdAndDelete(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(user) {
     try {
       return await user.save();
