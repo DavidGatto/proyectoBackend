@@ -11,7 +11,7 @@ document
       const users = await response.json();
 
       const accountsContainer = document.getElementById("accountsContainer");
-      accountsContainer.innerHTML = ""; // Limpiar el contenedor antes de agregar nuevos usuarios
+      accountsContainer.innerHTML = "";
 
       users.forEach((user) => {
         const userDiv = document.createElement("div");
@@ -41,7 +41,6 @@ document
         accountsContainer.appendChild(userDiv);
       });
 
-      // Agregar event listener para los botones de borrar cuenta
       document.querySelectorAll(".delete-account-btn").forEach((button) => {
         button.addEventListener("click", async (event) => {
           const userId = event.target.getAttribute("data-id");
@@ -57,7 +56,6 @@ document
               throw new Error(`HTTP error! status: ${deleteResponse.status}`);
             }
 
-            // Remover el usuario de la lista
             event.target.parentElement.remove();
 
             Swal.fire({
@@ -76,7 +74,6 @@ document
         });
       });
 
-      // Agregar event listener para los botones de actualizar rol
       document.querySelectorAll(".update-role-btn").forEach((button) => {
         button.addEventListener("click", async (event) => {
           const userId = event.target.getAttribute("data-id");

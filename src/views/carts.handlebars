@@ -15,20 +15,17 @@
         <p>Quantity: {{quantity}}</p>
         <p>ID: {{this._id}}</p>
         <p>Price: {{price}}</p>
-        <button
-          onclick="deleteProduct('{{cartId}}', '{{this.products.product._id}}')"
-        >Remove</button>
-
+          <button class="remove-button" data-cart-id="{{../cartId}}" data-product-id="{{product._id}}">Remove</button>
       </div>
     {{/each}}
 
     <button onclick="clearCart('{{cartId}}')">Clear Cart</button>
     <form method="post" action="/api/carts/{{cartId}}/purchase">
-      <button type="submit">Check Out</button>
+        <button class="remove-button" data-cart-id="{{../cartId}}" data-product-id="{{product._id}}">Remove</button>
     </form>
 
-    <script src="/js/cart.js">
-
-    </script>
+    <script src="/js/cart.js"></script>
+    
+    
   </body>
 </html>

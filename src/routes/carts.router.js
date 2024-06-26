@@ -14,11 +14,10 @@ router.get("/carts/:cid", cartController.getCart);
 router.post("/carts/:cid/products/:pid", cartController.addProductToCart);
 
 // Ruta para eliminar un producto de un carrito específico
-router.delete(
-  "/carts/:cid/products/:pid",
-  cartController.deleteProductFromCart
+router.post(
+  "/carts/:cid/products/:pid/decrease",
+  cartController.decreaseProductQuantity
 );
-
 // Ruta para actualizar el carrito con un arreglo de productos
 router.put("/carts/:cid", cartController.updateCart);
 

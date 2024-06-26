@@ -1,4 +1,5 @@
 import CartModel from "../models/cart.model.js";
+import mongoose from "mongoose";
 
 class CartManager {
   async createCart() {
@@ -44,22 +45,6 @@ class CartManager {
       return cart;
     } catch (error) {
       console.log("Error al agregar producto", error);
-    }
-  }
-
-  async deleteProduct(cartId, productId) {
-    try {
-      const cart = await CartModel.findById(cartId);
-      if (!cart) {
-        throw new Error("Cart not found");
-      }
-      cart.products = cart.products.filter(
-        (item) => item.product._id.toString() !== productId
-      );
-      await cart.save();
-      return cart;
-    } catch (error) {
-      throw new Error("Error");
     }
   }
 
@@ -123,6 +108,43 @@ class CartManager {
       return cart;
     } catch (error) {
       throw new Error("Error");
+    }
+  }
+  async decreaseProductQuantity(cartId, productId) {
+    try {
+      console.log(
+        `Decreasing product quantity. Cart ID: ${cartId}, Product ID: ${productId}`
+      );
+
+      const cart = await CartModel.findById(cartId);
+      if (!cart) {
+        console.log("Cart not found");
+        throw new Error("Cart not found");
+      }
+
+      const productIndex = cart.products.findIndex(
+        (item) => item.product.toString() === productId
+      );
+
+      if (productIndex === -1) {
+        console.log("Product not found in the cart");
+        throw new Error("Product not found in the cart");
+      }
+
+      if (cart.products[productIndex].quantity > 1) {
+        cart.products[productIndex].quantity -= 1;
+      } else {
+        cart.products.splice(productIndex, 1);
+      }
+
+      cart.markModified("products");
+      await cart.save();
+
+      console.log("Product quantity decreased successfully");
+      return cart;
+    } catch (error) {
+      console.error("Error decreasing product quantity:", error);
+      throw new Error("Error decreasing product quantity");
     }
   }
 }
