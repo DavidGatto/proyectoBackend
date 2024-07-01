@@ -1,16 +1,16 @@
-<div class="d-flex flex-column justify-content-center align-items-center">
+<div class="container d-flex flex-column justify-content-center align-items-center mt-5">
+  <h1 class="mb-4">Welcome, {{user.first_name}} {{user.last_name}}!</h1>
 
-  <h1>Welcome!, {{user.first_name}} {{user.last_name}}!</h1>
-
-  <div class="d-flex gap-4">
-
-    <p>Email: {{user.email}}</p>
-    <p>Age: {{user.age}}</p>
-    <p>Rol: {{role}}</p>
+  <div class="d-flex gap-4 align-items-start mb-4">
+    <p><strong>Email:</strong> {{user.email}}</p>
+    <p><strong>Age:</strong> {{user.age}}</p>
+    <p><strong>Role:</strong> {{role}}</p>
   </div>
-  <a class="mb-3" href="/api/sessions/logout">Logout</a>
-    <a class="mb-3" href="/api/sessions/current">Profile</a>
-  <h1 class="text-center">Product List</h1>
+ <div class="mb-4">
+    <a class="btn btn-primary me-2" href="/api/sessions/logout">Logout</a>
+    <a class="btn btn-secondary" href="/api/sessions/current">Profile</a>
+  </div>
+   <h1 class="text-center mb-4">Product List</h1>
   {{#each products}}
     <div class="card" style="width: 18rem;">
       <img src="#" class="card-img-top" alt="" />
@@ -18,7 +18,7 @@
         <h5 class="card-title text-center">{{this.title}}</h5>
         <p class="card-text text-center">{{this.description}}</p>
     <form action="/api/carts/{{../cartId}}/products/{{this._id}}" method="POST">
-  <button class="btnMios" type="submit">Agregar al Carrito</button>
+  <button class="btn btn-success text-center" type="submit">Agregar al Carrito</button>
 </form>
       </div>
     </div>

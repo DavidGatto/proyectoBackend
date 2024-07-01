@@ -1,67 +1,71 @@
 <div class="container">
-  <div class="row">
-    <div class="col">
-      <h1>My Profile</h1>
-      <p><strong>Name:</strong> {{user.first_name}} {{user.last_name}}</p>
-      <p><strong>Age:</strong> {{user.age}}</p>
-      <p><strong>Email:</strong> {{user.email}}</p>
-      <p><strong>Role:</strong> {{user.role}}</p>
-      <a class="mb-3" href="/api/sessions/logout">Logout</a>
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+      <div class="text-center">
+        <h1 class="mb-4">My Profile</h1>
+        <div class="d-flex justify-content-center gap-4">
+          <p><strong>Name:</strong> {{user.first_name}} {{user.last_name}}</p>
+          <p><strong>Age:</strong> {{user.age}}</p>
+          <p><strong>Email:</strong> {{user.email}}</p>
+          <p><strong>Role:</strong> {{user.role}}</p>
+          <a class="mb-3 btn btn-primary" href="/api/sessions/logout">Logout</a>
+        </div>
 
-      {{#if this.isAdmin}}
-        <a class="btn btn-primary" href="/realtimeproducts">Modify Products</a>
-      {{else}}
-        {{#if this.isPremium}}
-          <a class="btn btn-warning" href="/realtimeproducts">Premium Panel</a>
+        {{#if this.isAdmin}}
+          <a class="btn btn-primary" href="/realtimeproducts">Modify Products</a>
+        {{else}}
+          {{#if this.isPremium}}
+            <a class="btn btn-warning" href="/realtimeproducts">Premium Panel</a>
+          {{/if}}
+          <a class="btn btn-success" href="/chat">Live Chat</a>
+          <a class="btn btn-info" href="/api/products">Store</a>
+          {{#unless this.isPremium}}
+            <h2 id="togglePremiumForm" class="interactive-header mt-4">¿Quieres
+              ser premium?</h2>
+            <form
+              id="premiumForm"
+              action="/api/sessions/{{user._id}}/documents"
+              method="POST"
+              enctype="multipart/form-data"
+              style="display: none;"
+            >
+              <div class="form-group">
+                <label for="identificacion">Identificación:</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="identificacion"
+                  name="profile"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="comprobanteDomicilio">Comprobante de Domicilio:</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="comprobanteDomicilio"
+                  name="document"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="comprobanteEstadoCuenta">Comprobante de Estado de
+                  Cuenta:</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="comprobanteEstadoCuenta"
+                  name="products"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary mt-3">Cargar
+                Documentos</button>
+            </form>
+          {{/unless}}
         {{/if}}
-        <a class="btn btn-success" href="/chat">Live Chat</a>
-        <a class="btn btn-info" href="/api/products">Store</a>
-        {{#unless this.isPremium}}
-          <h2 id="togglePremiumForm" class="interactive-header">¿Quieres ser
-            premium?</h2>
-          <form
-            id="premiumForm"
-            action="/api/sessions/{{user._id}}/documents"
-            method="POST"
-            enctype="multipart/form-data"
-            style="display: none;"
-          >
-            <div class="form-group">
-              <label for="identificacion">Identificación:</label>
-              <input
-                type="file"
-                class="form-control"
-                id="identificacion"
-                name="profile"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="comprobanteDomicilio">Comprobante de Domicilio:</label>
-              <input
-                type="file"
-                class="form-control"
-                id="comprobanteDomicilio"
-                name="document"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="comprobanteEstadoCuenta">Comprobante de Estado de
-                Cuenta:</label>
-              <input
-                type="file"
-                class="form-control"
-                id="comprobanteEstadoCuenta"
-                name="products"
-                required
-              />
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Cargar Documentos</button>
-          </form>
-
-        {{/unless}}
-      {{/if}}
+      </div>
     </div>
   </div>
 </div>

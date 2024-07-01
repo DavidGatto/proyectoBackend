@@ -1,31 +1,43 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cart</title>
-  </head>
-  <body>
-    <h1>Cart ID: {{cartId}}</h1>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart</title>
 
+
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="d-flex gap-4">
+
+    <h1>Cart ID: {{cartId}}</h1>
+    <div class="text-center">
+
+ <a class="btn btn-primary" href="/api/products">Back to store</a>
+    </div>
+    </div>
     <h2>Products in the Cart</h2>
 
     {{#each products}}
-      <div>
-        <p>Title: {{this.title}}</p>
-        <p>Quantity: {{quantity}}</p>
-        <p>ID: {{this._id}}</p>
-        <p>Price: {{price}}</p>
-          <button class="remove-button" data-cart-id="{{../cartId}}" data-product-id="{{product._id}}">Remove</button>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{this.title}}</h5>
+          <p class="card-text">Quantity: {{quantity}}</p>
+          <p class="card-text">ID: {{this._id}}</p>
+          <p class="card-text">Price: {{price}}</p>
+          <button class="btn btn-danger remove-button" data-cart-id="{{../cartId}}" data-product-id="{{this._id}}">Remove</button>
+        </div>
       </div>
     {{/each}}
 
-    <button onclick="clearCart('{{cartId}}')">Clear Cart</button>
+    <button class="btn btn-warning" onclick="clearCart('{{cartId}}')">Clear Cart</button>
     <form method="post" action="/api/carts/{{cartId}}/purchase">
-        <button class="remove-button" data-cart-id="{{../cartId}}" data-product-id="{{product._id}}">Remove</button>
+      <button type="submit" class="btn btn-success mt-4">Purchase</button>
     </form>
+  </div>
 
-    <script src="/js/cart.js"></script>
-    
-    
-  </body>
+
+  <script src="/js/cart.js"></script>
+</body>
 </html>

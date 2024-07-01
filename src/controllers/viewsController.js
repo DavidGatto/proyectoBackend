@@ -86,6 +86,7 @@ class ViewsController {
         const product = item.product.toObject();
         const quantity = item.quantity;
         const totalPrice = product.price * quantity;
+        const proId = item.req.params.pid;
 
         totalCompra += totalPrice;
 
@@ -93,6 +94,7 @@ class ViewsController {
           product: { ...product, totalPrice },
           quantity,
           cartId,
+          proId,
         };
       });
 
