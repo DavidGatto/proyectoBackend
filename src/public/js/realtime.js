@@ -15,11 +15,13 @@ const renderProducts = (products) => {
     card.classList.add("card");
 
     card.innerHTML = `
-      <p> ${item.title} </p>
-      <p> ${item.price} </p>
-      <button class="btn-delete">Eliminar</button>
-      <button class="btn-update">Actualizar</button>
-    `;
+    <p class="card-title font-weight-bold"> ${item.title} </p>
+    <p class="card-text"> ${item.price} </p>
+    <div class="btn-group mb-3" role="group">
+      <button class="btn btn-danger btn-delete">Eliminar</button>
+      <button class="btn btn-warning btn-update">Actualizar</button>
+    </div>
+  `;
 
     containerProducts.appendChild(card);
 
@@ -38,9 +40,9 @@ const renderProducts = (products) => {
 
     card.querySelector(".btn-update").addEventListener("click", () => {
       if (role === "premium" && item.owner === email) {
-        updateProduct(item);
+        showUpdateProductModal(item);
       } else if (role === "admin") {
-        updateProduct(item);
+        showUpdateProductModal(item);
       } else {
         Swal.fire({
           title: "Error",
@@ -55,19 +57,53 @@ const deleteProduct = (id) => {
   socket.emit("deleteProductById", id);
 };
 
-const updateProduct = (item) => {
-  const updatedProduct = {
-    title: prompt("Nuevo Título", item.title),
-    description: prompt("Nueva Descripción", item.description),
-    price: prompt("Nuevo Precio", item.price),
-    img: prompt("Nueva Imagen", item.img),
-    code: prompt("Nuevo Código", item.code),
-    stock: prompt("Nuevo Stock", item.stock),
-    category: prompt("Nueva Categoría", item.category),
-    status: prompt("Nuevo Estado (true/false)", item.status) === "true",
-  };
-
-  socket.emit("updateProduct", { productId: item._id, updatedProduct });
+const showUpdateProductModal = (item) => {
+  Swal.fire({
+    title: "Actualizar Producto",
+    html: `
+      <input id="swal-input1" class="swal2-input" placeholder="Nuevo Título" value="${
+        item.title
+      }">
+      <input id="swal-input2" class="swal2-input" placeholder="Nueva Descripción" value="${
+        item.description
+      }">
+      <input id="swal-input3" class="swal2-input" placeholder="Nuevo Precio" value="${
+        item.price
+      }">
+      <input id="swal-input4" class="swal2-input" placeholder="Nueva Imagen" value="${
+        item.img
+      }">
+      <input id="swal-input5" class="swal2-input" placeholder="Nuevo Código" value="${
+        item.code
+      }">
+      <input id="swal-input6" class="swal2-input" placeholder="Nuevo Stock" value="${
+        item.stock
+      }">
+      <input id="swal-input7" class="swal2-input" placeholder="Nueva Categoría" value="${
+        item.category
+      }">
+      <select id="swal-input8" class="swal2-input">
+        <option value="true" ${item.status ? "selected" : ""}>Activo</option>
+        <option value="false" ${
+          !item.status ? "selected" : ""
+        }>Inactivo</option>
+      </select>
+    `,
+    focusConfirm: false,
+    preConfirm: () => {
+      const updatedProduct = {
+        title: document.getElementById("swal-input1").value,
+        description: document.getElementById("swal-input2").value,
+        price: document.getElementById("swal-input3").value,
+        img: document.getElementById("swal-input4").value,
+        code: document.getElementById("swal-input5").value,
+        stock: document.getElementById("swal-input6").value,
+        category: document.getElementById("swal-input7").value,
+        status: document.getElementById("swal-input8").value === "true",
+      };
+      socket.emit("updateProduct", { productId: item._id, updatedProduct });
+    },
+  });
 };
 
 document.getElementById("btnEnviar").addEventListener("click", () => {
