@@ -75,6 +75,26 @@ class ProductManager {
     }
   }
 
+  async updateProduct(id, updateData) {
+    try {
+      const updatedProduct = await ProductModel.findByIdAndUpdate(
+        id,
+        updateData,
+        { new: true }
+      );
+
+      if (!updatedProduct) {
+        throw new Error("Producto no encontrado");
+      }
+
+      logger.info(`Product updated: ${JSON.stringify(updatedProduct)}`);
+      return updatedProduct;
+    } catch (error) {
+      console.log("Error al actualizar el producto", error);
+      throw error;
+    }
+  }
+
   async getProductById(id) {
     try {
       const foundProduct = await ProductModel.findById(id);
@@ -88,22 +108,6 @@ class ProductManager {
       return foundProduct;
     } catch (error) {
       console.log("Error getting a product by id");
-    }
-  }
-
-  async updateProduct(id, updatedProduct) {
-    try {
-      const updated = await ProductModel.findByIdAndUpdate(id, updatedProduct);
-
-      if (!updated) {
-        console.log("No se encuentra el producto");
-        return null;
-      }
-
-      console.log("Producto actualizado");
-      return updated;
-    } catch (error) {
-      console.log("Error al actualizar", error);
     }
   }
 

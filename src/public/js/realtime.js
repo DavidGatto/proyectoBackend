@@ -14,14 +14,16 @@ const renderProducts = (products) => {
     const card = document.createElement("div");
     card.classList.add("card");
 
-    card.innerHTML = ` 
-                        <p> ${item.title} </p>
-                        <p> ${item.price} </p>
-                        <button> Eliminar </button>
-                        `;
+    card.innerHTML = `
+      <p> ${item.title} </p>
+      <p> ${item.price} </p>
+      <button class="btn-delete">Eliminar</button>
+      <button class="btn-update">Actualizar</button>
+    `;
 
     containerProducts.appendChild(card);
-    card.querySelector("button").addEventListener("click", () => {
+
+    card.querySelector(".btn-delete").addEventListener("click", () => {
       if (role === "premium" && item.owner === email) {
         deleteProduct(item._id);
       } else if (role === "admin") {
@@ -29,7 +31,20 @@ const renderProducts = (products) => {
       } else {
         Swal.fire({
           title: "Error",
-          text: "No tenes permiso para borrar ese producto",
+          text: "No tienes permiso para borrar este producto",
+        });
+      }
+    });
+
+    card.querySelector(".btn-update").addEventListener("click", () => {
+      if (role === "premium" && item.owner === email) {
+        updateProduct(item);
+      } else if (role === "admin") {
+        updateProduct(item);
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "No tienes permiso para actualizar este producto",
         });
       }
     });
@@ -40,14 +55,26 @@ const deleteProduct = (id) => {
   socket.emit("deleteProductById", id);
 };
 
+const updateProduct = (item) => {
+  const updatedProduct = {
+    title: prompt("Nuevo Título", item.title),
+    description: prompt("Nueva Descripción", item.description),
+    price: prompt("Nuevo Precio", item.price),
+    img: prompt("Nueva Imagen", item.img),
+    code: prompt("Nuevo Código", item.code),
+    stock: prompt("Nuevo Stock", item.stock),
+    category: prompt("Nueva Categoría", item.category),
+    status: prompt("Nuevo Estado (true/false)", item.status) === "true",
+  };
+
+  socket.emit("updateProduct", { productId: item._id, updatedProduct });
+};
+
 document.getElementById("btnEnviar").addEventListener("click", () => {
   addProduct();
 });
 
 const addProduct = () => {
-  const role = document.getElementById("role").textContent;
-  const email = document.getElementById("email").textContent;
-
   const owner = role === "premium" ? email : "admin";
   const product = {
     title: document.getElementById("title").value,
