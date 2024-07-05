@@ -30,7 +30,7 @@ class ProductController {
 
       const productReq = req.body;
       if (req.file) {
-        productReq.thumbnails = req.file.path;
+        productReq.thumbnails = `../uploads/imageproduct/${req.file.filename}`;
       }
 
       const product = await manager.addProduct(productReq);

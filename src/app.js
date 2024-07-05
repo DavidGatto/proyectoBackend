@@ -22,6 +22,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("./src/public"));
+app.use("/uploads", express.static("src/uploads"));
 app.use(
   session({
     secret: "secretCoder",

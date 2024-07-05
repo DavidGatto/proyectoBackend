@@ -6,25 +6,24 @@
     <p><strong>Age:</strong> {{user.age}}</p>
     <p><strong>Role:</strong> {{role}}</p>
   </div>
- <div class="mb-4">
+  <div class="mb-4">
     <a class="btn btn-primary me-2" href="/api/sessions/logout">Logout</a>
     <a class="btn btn-secondary" href="/api/sessions/current">Profile</a>
   </div>
-   <h1 class="text-center mb-4">Product List</h1>
+  <h1 class="text-center mb-4">Product List</h1>
   {{#each products}}
     <div class="card" style="width: 18rem;">
-      <img src="#" class="card-img-top" alt="" />
+      <img src="{{this.thumbnails}}" class="card-img-top" alt="Product Image" />
       <div class="card-body">
         <h5 class="card-title text-center">{{this.title}}</h5>
         <p class="card-text text-center">{{this.description}}</p>
-    <form action="/api/carts/{{../cartId}}/products/{{this._id}}" method="POST">
-  <button class="btn btn-success text-center" type="submit">Agregar al Carrito</button>
-</form>
+        <form action="/api/carts/{{../cartId}}/products/{{this._id}}" method="POST">
+          <button class="btn btn-success text-center" type="submit">Agregar al Carrito</button>
+        </form>
       </div>
     </div>
   {{/each}}
   <div class="flex">
-
     {{#if hasPrevPage}}
       <a href="/api/products?page={{prevPage}}">Anterior</a>
     {{/if}}
