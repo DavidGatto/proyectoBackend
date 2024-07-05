@@ -30,7 +30,7 @@ class ProductController {
 
       const productReq = req.body;
       if (req.file) {
-        productReq.thumbnails = `../uploads/imageproduct/${req.file.filename}`;
+        productReq.thumbnails = `${req.file.filename}`;
       }
 
       const product = await manager.addProduct(productReq);
@@ -50,10 +50,16 @@ class ProductController {
     try {
       const id = req.params.pid;
       const deletedProduct = await manager.deleteProductById(id);
-      res.status(200).json({
-        message: "Producto eliminado correctamente",
-        product: deletedProduct,
-      });
+      if (deletedProduct) {
+        res.status(200).json({
+          message: "Producto eliminado correctamente",
+          product: deletedProduct,
+        });
+      } else {
+        res
+          .status(404)
+          .json({ message: `Producto con id ${id} no encontrado` });
+      }
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

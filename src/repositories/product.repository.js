@@ -1,5 +1,7 @@
 import ProductModel from "../models/product.model.js";
 import logger from "../utils/logger.js";
+import fs from "fs";
+import path from "path";
 
 class ProductManager {
   async addProduct({
@@ -113,6 +115,26 @@ class ProductManager {
 
   async deleteProductById(id) {
     try {
+      const product = await ProductModel.findById(id);
+
+      if (!product) {
+        console.log("No se encuentra el producto");
+        return null;
+      }
+
+      if (product.thumbnails && product.thumbnails !== "Sin imagen") {
+        const imagePath = path.resolve(
+          `./src/uploads/imageproduct/${product.thumbnails}`
+        );
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.log("Error al eliminar la imagen:", err);
+          } else {
+            console.log("Imagen eliminada:", product.thumbnails);
+          }
+        });
+      }
+
       const deleted = await ProductModel.findByIdAndDelete(id);
 
       if (!deleted) {
@@ -121,6 +143,7 @@ class ProductManager {
       }
 
       console.log("Producto eliminado");
+      return deleted;
     } catch (error) {
       console.log("Error al eliminar", error);
       throw error;
