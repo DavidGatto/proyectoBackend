@@ -107,22 +107,29 @@ const showUpdateProductModal = (item) => {
 };
 
 document.getElementById("btnEnviar").addEventListener("click", () => {
-  addProduct();
+  const form = document.getElementById("productForm");
+  const formData = new FormData(form);
+
+  fetch("/api/products", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      Swal.fire({
+        title: "Producto agregado correctamente",
+        text: `Producto ${data.product.title} agregado con éxito`,
+        icon: "success",
+      });
+      form.reset();
+      // Emitir un evento para obtener los productos actualizados
+      socket.emit("getProducts");
+    })
+    .catch((error) => {
+      Swal.fire({
+        title: "Error",
+        text: error.message,
+        icon: "error",
+      });
+    });
 });
-
-const addProduct = () => {
-  const owner = role === "premium" ? email : "admin";
-  const product = {
-    title: document.getElementById("title").value,
-    description: document.getElementById("description").value,
-    price: document.getElementById("price").value,
-    img: document.getElementById("img").value,
-    code: document.getElementById("code").value,
-    stock: document.getElementById("stock").value,
-    category: document.getElementById("category").value,
-    status: document.getElementById("status").value === "true",
-    owner,
-  };
-
-  socket.emit("addProduct", product);
-};

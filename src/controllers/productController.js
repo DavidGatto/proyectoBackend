@@ -29,6 +29,10 @@ class ProductController {
       console.log("Datos del producto a agregar:", req.body);
 
       const productReq = req.body;
+      if (req.file) {
+        productReq.thumbnails = req.file.path;
+      }
+
       const product = await manager.addProduct(productReq);
 
       // Enviar una respuesta indicando que el producto se agregó correctamente

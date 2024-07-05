@@ -14,9 +14,15 @@
   </div>
 
   <h2 class="mt-4">Formulario para agregar productos</h2>
-  <form class="form-inline">
+  <form class="form-inline" enctype="multipart/form-data" id="productForm">
     <div class="form-group mb-2">
-      <input type="text" id="title" class="form-control" placeholder="Titulo" />
+      <input
+        type="text"
+        id="title"
+        class="form-control"
+        placeholder="Titulo"
+        name="title"
+      />
     </div>
     <div class="form-group mb-2">
       <input
@@ -24,6 +30,7 @@
         id="description"
         class="form-control"
         placeholder="Descripcion"
+        name="description"
       />
     </div>
     <div class="form-group mb-2">
@@ -32,13 +39,25 @@
         id="price"
         class="form-control"
         placeholder="Precio"
+        name="price"
       />
     </div>
     <div class="form-group mb-2">
-      <input type="text" id="img" class="form-control" value="Sin Imagen" />
+      <input
+        type="file"
+        id="thumbnails"
+        class="form-control"
+        name="thumbnails"
+      />
     </div>
     <div class="form-group mb-2">
-      <input type="text" id="code" class="form-control" placeholder="Código" />
+      <input
+        type="text"
+        id="code"
+        class="form-control"
+        placeholder="Código"
+        name="code"
+      />
     </div>
     <div class="form-group mb-2">
       <input
@@ -46,6 +65,7 @@
         id="stock"
         class="form-control"
         placeholder="Stock"
+        name="stock"
       />
     </div>
     <div class="form-group mb-2">
@@ -54,10 +74,11 @@
         id="category"
         class="form-control"
         placeholder="Categoria"
+        name="category"
       />
     </div>
     <div class="form-group mb-2">
-      <select id="status" class="form-control">
+      <select id="status" class="form-control" name="status">
         <option value="true">Activo</option>
         <option value="false">Inactivo</option>
       </select>
